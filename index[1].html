@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureShield Antivirus - Security Software Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="app-logo">
+                    <svg class="shield-icon" viewBox="0 0 24 24">
+                        <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10.5V11.5C15.4,11.5 16,12.4 16,13V16C16,16.6 15.6,17 15,17H9C8.4,17 8,16.6 8,16V13C8,12.4 8.4,11.5 9,11.5V10.5C9,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.2,8.7 10.2,10.5V11.5H13.8V10.5C13.8,8.7 12.8,8.2 12,8.2Z"></path>
+                    </svg>
+                    <div>
+                        <h1>SecureShield Antivirus</h1>
+                        <span class="version">v2.5.11</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="protection-status" id="protectionStatus">
+                    <span class="status-indicator status-protected"></span>
+                    <span class="status-text">Protected</span>
+                </div>
+                <div class="last-scan">
+                    Last scan: <span id="lastScanTime">Aug 11, 2025 - 11:45 PM</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section class="dashboard-section">
+                <div class="scan-panel card">
+                    <h2>System Protection</h2>
+                    <div class="main-scan-area">
+                        <button class="btn btn--primary btn--lg scan-now-btn" id="scanNowBtn">
+                            <svg class="scan-icon" viewBox="0 0 24 24">
+                                <path d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7Z"></path>
+                            </svg>
+                            SCAN NOW
+                        </button>
+                        <div class="scan-options">
+                            <button class="btn btn--outline" id="quickScanBtn">Quick Scan</button>
+                            <button class="btn btn--outline" id="fullScanBtn">Full System Scan</button>
+                            <button class="btn btn--outline" id="customScanBtn">Custom Scan</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Scan Progress -->
+                    <div class="scan-progress hidden" id="scanProgress">
+                        <div class="progress-info">
+                            <div class="progress-status" id="progressStatus">Initializing scan...</div>
+                            <div class="progress-details" id="progressDetails">0 files scanned</div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                        <button class="btn btn--secondary" id="cancelScanBtn">Cancel Scan</button>
+                    </div>
+                </div>
+
+                <div class="stats-panel card">
+                    <h3>Today's Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" id="filesScanned">15,847</div>
+                            <div class="stat-label">Files Scanned</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number stat-threats" id="threatsBlocked">3</div>
+                            <div class="stat-label">Threats Blocked</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number stat-success">Updated</div>
+                            <div class="stat-label">Definitions</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Real-time Protection Panel -->
+            <section class="protection-panel card">
+                <h3>Real-time Protection 
+                    <span class="tooltip" data-tooltip="Real-time protection continuously monitors your system for threats">ℹ️</span>
+                </h3>
+                <div class="protection-modules" id="protectionModules">
+                    <!-- Dynamically generated protection toggles -->
+                </div>
+            </section>
+
+            <!-- Scan Results Section -->
+            <section class="scan-results card hidden" id="scanResults">
+                <h3>Scan Results</h3>
+                <div class="scan-summary" id="scanSummary">
+                    <!-- Results summary -->
+                </div>
+                <div class="threats-list" id="threatsList">
+                    <!-- Detected threats -->
+                </div>
+            </section>
+
+            <!-- Quarantine Section -->
+            <section class="quarantine-panel card">
+                <h3>Quarantine 
+                    <span class="tooltip" data-tooltip="Quarantine isolates suspicious files so they cannot harm your system">ℹ️</span>
+                </h3>
+                <div class="quarantine-content">
+                    <div class="quarantine-stats">
+                        <span>Items in quarantine: <strong id="quarantineCount">2</strong></span>
+                        <button class="btn btn--outline btn--sm" id="clearQuarantineBtn">Clear All</button>
+                    </div>
+                    <div class="quarantine-items" id="quarantineItems">
+                        <!-- Quarantined items -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Panel -->
+            <section class="settings-panel card">
+                <h3>Settings</h3>
+                <div class="settings-content">
+                    <div class="setting-group">
+                        <label for="scanSensitivity">Scan Sensitivity</label>
+                        <input type="range" id="scanSensitivity" min="1" max="3" value="2" class="form-control">
+                        <div class="sensitivity-labels">
+                            <span>Low</span>
+                            <span>Medium</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label class="toggle-container">
+                            <input type="checkbox" id="autoUpdate" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Automatic Updates</span>
+                        </label>
+                    </div>
+                    <div class="setting-group">
+                        <label class="toggle-container">
+                            <input type="checkbox" id="notifications" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Desktop Notifications</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Update Status Panel -->
+            <section class="update-panel card">
+                <h3>Virus Definitions</h3>
+                <div class="update-content">
+                    <div class="update-info">
+                        <div class="update-item">
+                            <span>Version:</span>
+                            <strong id="definitionVersion">25.08.11.02</strong>
+                        </div>
+                        <div class="update-item">
+                            <span>Last Update:</span>
+                            <strong id="lastUpdate">Aug 11, 2025</strong>
+                        </div>
+                    </div>
+                    <button class="btn btn--primary" id="checkUpdatesBtn">Check for Updates</button>
+                    <div class="update-progress hidden" id="updateProgress">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="updateProgressBar"></div>
+                        </div>
+                        <div class="update-status" id="updateStatus">Checking for updates...</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Educational Modal -->
+    <div class="modal hidden" id="educationalModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Educational Information</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modalContent">Educational content goes here.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Threat Alert Modal -->
+    <div class="modal hidden" id="threatModal">
+        <div class="modal-content threat-modal">
+            <div class="modal-header">
+                <h3>⚠️ Threat Detected</h3>
+                <button class="modal-close" id="threatModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="threat-info" id="threatInfo">
+                    <!-- Threat details -->
+                </div>
+                <div class="threat-actions">
+                    <button class="btn btn--primary" id="quarantineThreatBtn">Quarantine</button>
+                    <button class="btn btn--secondary" id="deleteThreatBtn">Delete</button>
+                    <button class="btn btn--outline" id="ignoreThreatBtn">Ignore</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
